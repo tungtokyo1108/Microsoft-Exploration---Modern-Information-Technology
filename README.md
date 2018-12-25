@@ -5,4 +5,10 @@
 ---------------------------------------------------------------------------------------------------------------------------------------
 Source: 
 
-https://github.com/Microsoft/GraphEngine
+Machine Learning: https://github.com/Microsoft/ELL
+
+Artificial Intelligence: https://github.com/Microsoft/AI
+
+Deep Learning: https://github.com/Microsoft/CNTK
+
+Modern Network: https://github.com/Microsoft/GraphEngine
