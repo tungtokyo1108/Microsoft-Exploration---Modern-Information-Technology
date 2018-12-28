@@ -7,7 +7,7 @@ Source:
 
 Machine Learning: https://github.com/Microsoft/ELL
 
-Artificial Intelligence: https://github.com/Microsoft/AI
+Artificial Intelligence: https://github.com/Microsoft/AI / https://github.com/Microsoft/malmo / https://github.com/Microsoft/pai
 
 Deep Learning: https://github.com/Microsoft/CNTK
 
