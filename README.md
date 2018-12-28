@@ -5,7 +5,7 @@
 ---------------------------------------------------------------------------------------------------------------------------------------
 Source: 
 
-Machine Learning: https://github.com/Microsoft/ELL
+Machine Learning: https://github.com/Microsoft/ELL / https://github.com/Azure/mmlspark
 
 Artificial Intelligence: https://github.com/Microsoft/AI / https://github.com/Microsoft/malmo / https://github.com/Microsoft/pai
 
