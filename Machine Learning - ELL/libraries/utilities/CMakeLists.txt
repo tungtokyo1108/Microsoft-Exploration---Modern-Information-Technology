@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 set(library_name utilities)
 
 set(src
+    src/Boolean.cpp
     src/Files.cpp 
     src/Logger.cpp 
     src/OutputStreamImpostor.cpp
@@ -11,6 +12,7 @@ set(src
 
 set(include
     include/AbstractInvoker.h
+    include/Boolean.h
     include/Exception.h
     include/Files.h
     include/Logger.h
