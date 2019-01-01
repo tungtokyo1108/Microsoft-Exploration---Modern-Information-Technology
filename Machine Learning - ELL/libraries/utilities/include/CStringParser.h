@@ -57,7 +57,52 @@ namespace ell
     {
         inline ParseResult cParse(const char* pStr, char*& pEnd, float& value)
         {
-            
+            if (IsWhiteSpace(*pStr))
+            {
+                return ParseResult::badFormat;
+            }
+
+            auto tmp = errno;
+            errno = 0;
+
+            value = strtof(pStr, &pEnd);
+
+            if (pStr == pEnd)
+            {
+                return ParseResult::badFormat;
+            }
+            if (errno == ERANGE)
+            {
+                return ParseResult::outOfRange;
+            }
+
+            errno = tmp;
+            return ParseResult::success;
+        }
+
+        inline ParseResult cParse(const char* pStr, char*& pEnd, double& value)
+        {
+            if (IsWhiteSpace(*pStr))
+            {
+                return ParseResult::badFormat;
+            }
+
+            auto tmp = errno;
+            errno = 0;
+
+            value = std::strtod(pStr, &pEnd);
+
+            if (pStr == pEnd)
+            {
+                return ParseResult::badFormat;
+            }
+            if (errno == ERANGE)
+            {
+                return ParseResult::outOfRange;
+            }
+
+            errno = tmp;
+            return ParseResult::success;
         }
     }
 }
