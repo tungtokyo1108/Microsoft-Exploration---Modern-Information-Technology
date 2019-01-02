@@ -4,6 +4,7 @@ set(library_name utilities)
 
 set(src
     src/Boolean.cpp
+    src/CStringParser.cpp
     src/Files.cpp 
     src/Logger.cpp 
     src/OutputStreamImpostor.cpp
@@ -13,6 +14,7 @@ set(src
 set(include
     include/AbstractInvoker.h
     include/Boolean.h
+    include/CStringParser.h
     include/Exception.h
     include/Files.h
     include/Logger.h
