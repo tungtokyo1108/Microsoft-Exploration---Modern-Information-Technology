@@ -9,6 +9,7 @@ Machine Learning:
  - https://github.com/Microsoft/ELL
  - https://github.com/Azure/mmlspark
  - https://github.com/dotnet/machinelearning 
+ - https://github.com/Azure/MachineLearningNotebooks
 
 Artificial Intelligence: 
  - https://github.com/Microsoft/AI 
