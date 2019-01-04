@@ -5,6 +5,7 @@ set(library_name utilities)
 set(src
     src/Boolean.cpp
     src/CommandLineParser.cpp
+    src/CompressedIntegerList.cpp
     src/CStringParser.cpp
     src/Files.cpp 
     src/Logger.cpp 
@@ -16,6 +17,7 @@ set(include
     include/AbstractInvoker.h
     include/Boolean.h
     include/CommandLineParser.h
+    include/CompressedIntegerList.h
     include/CStringParser.h
     include/Exception.h
     include/Files.h
