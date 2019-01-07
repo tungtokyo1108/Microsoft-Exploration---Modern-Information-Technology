@@ -7,7 +7,8 @@ set(src
     src/CommandLineParser.cpp
     src/CompressedIntegerList.cpp
     src/CStringParser.cpp
-    src/Files.cpp 
+    src/Files.cpp
+    src/Format.cpp 
     src/Logger.cpp 
     src/OutputStreamImpostor.cpp
     src/StringUtil.cpp
@@ -19,8 +20,10 @@ set(include
     include/CommandLineParser.h
     include/CompressedIntegerList.h
     include/CStringParser.h
+    include/Debug.h
     include/Exception.h
     include/Files.h
+    include/Format.h
     include/Logger.h
     include/OutputStreamImpostor.h
     include/StringUtil.h
