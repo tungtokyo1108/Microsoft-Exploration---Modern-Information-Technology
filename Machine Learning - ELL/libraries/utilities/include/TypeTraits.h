@@ -8,6 +8,7 @@
 
 #include <type_traits>
 #include <vector>
+#include <iostream>
 
 namespace ell 
 {
@@ -78,5 +79,63 @@ namespace ell
         {
             using Type = T;
         };
+
+        template <typename T>
+        using IdentityTypeT = typename IdentityType<T>::Type;
+
+        namespace detail 
+        {
+            // template <typename T, bool = std::is_pointer_v<T>>
+            template <typename T, bool = std::is_pointer<T>::value>
+            struct RemoveAllPointers 
+            {
+                static constexpr size_t NumPointers = 1 + RemoveAllPointers<std::remove_pointer_t<T>>::NumPointers;
+                using Type = typename RemoveAllPointers<std::remove_pointer_t<T>>::Type;
+            };
+
+            template <typename T>
+            struct RemoveAllPointers<T, false>
+            {
+                static constexpr size_t NumPointers = 0;
+                using Type = T;
+            };
+        }
+
+        template <typename T>
+        using RemoveAllPointersT = typename detail::RemoveAllPointers<T>::Type;
+
+        /*Provides a count of the number of pointers a given type has*/
+        template <typename T>
+        inline constexpr size_t CountOfPointers = detail::RemoveAllPointers<T>::NumPointers;
+
+        template <typename... T>
+        struct VariantVisitor : T... 
+        {
+            using T::operator()...;
+        };
+
+        // template <typename... T>
+        // VariantVisitor(T...)->VariantVisitor<T...>;
+
+        namespace detail
+        {
+            template <typename T, typename... Ts>
+            struct IsOneOf : std::disjunction<std::is_same<T,Ts>...>
+            {};
+        }
+
+        template <typename T, typename... TypesToCheckAgainst>
+        inline constexpr bool IsOneOf = detail::IsOneOf<T, TypesToCheckAgainst...>::value;
+
+        namespace detail
+        {
+            template <typename T1, typename... Ts>
+            struct AllSame : std::conjunction<std::is_same<T1,Ts>...>
+            {};
+        }
+
+        template <typename T, typename... RestOfTypes>
+        inline constexpr bool AllSame = detail::AllSame<T, RestOfTypes...>::value;
+
     }
 }
