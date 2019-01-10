@@ -5,6 +5,7 @@
  *  Created on: Dec 25, 2018
  *  Student (MIG Virtual Developer): Tung Dang
  */
+#pragma once
 
 #include <exception>
 #include <string>
