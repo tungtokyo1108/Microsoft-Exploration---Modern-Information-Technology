@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 set(library_name utilities)
 
 set(src
+    src/Archiver.cpp
+    src/ArchiveVersion.cpp
     src/Boolean.cpp
     src/CommandLineParser.cpp
     src/CompressedIntegerList.cpp
@@ -17,6 +19,9 @@ set(src
 
 set(include
     include/AbstractInvoker.h
+    include/Archiver.h
+    include/ArchiveVersion.h
+    include/IArchivable.h
     include/Boolean.h
     include/CommandLineParser.h
     include/CompressedIntegerList.h
@@ -31,6 +36,7 @@ set(include
     include/TypeFactory.h
     include/TypeName.h
     include/TypeTraits.h
+    include/Unused.h
 )
 
 source_group("src" FILES ${src})
