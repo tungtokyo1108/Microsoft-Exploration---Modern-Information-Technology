@@ -12,6 +12,7 @@ set(src
     src/Logger.cpp 
     src/OutputStreamImpostor.cpp
     src/StringUtil.cpp
+    src/TypeName.cpp
 )
 
 set(include
@@ -27,6 +28,9 @@ set(include
     include/Logger.h
     include/OutputStreamImpostor.h
     include/StringUtil.h
+    include/TypeFactory.h
+    include/TypeName.h
+    include/TypeTraits.h
 )
 
 source_group("src" FILES ${src})
