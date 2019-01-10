@@ -5,6 +5,7 @@
  *  Created on: Jan 07, 2019
  *  Student (MIG Virtual Developer): Tung Dang
  */
+#pragma once
 
 #include <type_traits>
 #include <vector>
