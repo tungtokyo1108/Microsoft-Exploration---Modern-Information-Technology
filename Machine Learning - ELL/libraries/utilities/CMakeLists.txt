@@ -33,6 +33,7 @@ set(include
     include/Logger.h
     include/OutputStreamImpostor.h
     include/StringUtil.h
+    include/StlStridedIterator.h
     include/TypeFactory.h
     include/TypeName.h
     include/TypeTraits.h
