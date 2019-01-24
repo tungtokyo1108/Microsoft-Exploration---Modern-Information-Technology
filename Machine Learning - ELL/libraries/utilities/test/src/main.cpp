@@ -7,9 +7,13 @@
  */
 
 #include "utilities/test/include/Files_test.h"
+#include "utilities/test/include/Iterator_test.h"
+
 #include <testing/include/testing.h>
+
 #include <utilities/include/Exception.h>
 #include <utilities/include/Files.h>
+#include <utilities/include/Unused.h>
 
 #include <iostream>
 #include <numeric>
@@ -24,6 +28,10 @@ int main(int argc, char const *argv[])
     try 
     {
         std::string basePath = ell::utilities::GetDirectoryPath(argv[0]);
+
+        TestIteratorAdapter();
+        TestTransformIterator();
+
         TestStringf();
         TestJoinPaths(basePath);
         #ifdef WIN32
