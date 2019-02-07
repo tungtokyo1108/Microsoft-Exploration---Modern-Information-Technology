@@ -31,6 +31,8 @@ int main(int argc, char const *argv[])
 
         TestIteratorAdapter();
         TestTransformIterator();
+        TestParallelTransformIterator();
+        TestStlStridedIterator();
 
         TestStringf();
         TestJoinPaths(basePath);
