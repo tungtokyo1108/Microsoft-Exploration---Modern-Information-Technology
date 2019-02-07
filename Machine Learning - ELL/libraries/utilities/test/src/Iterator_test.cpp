@@ -111,4 +111,40 @@ namespace ell
         auto elapsed = timer.Elapsed();
         std::cout << "Elapsed time: " << elapsed << std::endl;
     }
+
+    void TestParallelTransformIterator() 
+    {
+        std::vector<int> vec(64);
+        std::iota(vec.begin(), vec.end(), 5);
+
+        auto srcIt = utilities::MakeStlContainerReferenceIterator(vec.begin(), vec.end());
+        auto transIt = utilities::MakeParallelTransformIterator(srcIt, twoPointFiveTimes);
+
+        bool passed = true;
+        MillisecondTimer timer;
+        int Index = 0;
+        while (transIt.IsValid())
+        {
+            passed = passed && transIt.Get() == float(2.5 * vec[Index]);
+            transIt.Next();
+            Index++;
+        }
+        testing::ProcessTest("utilities::ParallelTransformIterator.Get", passed);
+        auto elapsed = timer.Elapsed();
+        std::cout << "Elapsed time: " << elapsed << "ms" << std::endl;
+    }
+
+    void TestStlStridedIterator() 
+    {
+        std::vector<double> vec(20);
+        std::iota(std::begin(vec), std::end(vec), 1);
+
+        auto begin = utilities::MakeStlStridedIterator(std::begin(vec), 2);
+        auto end = utilities::MakeStlStridedIterator(std::end(vec), 2);
+        int index = 0;
+        for (auto it = begin; it != end; ++it, ++index)
+        {
+            testing::ProcessTest("utilities::StlStridedIterator element access", *it == vec[2*index]);
+        }
+    }
 }
