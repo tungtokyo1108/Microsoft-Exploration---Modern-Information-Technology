@@ -92,7 +92,7 @@ namespace ell
             }
         };
 
-        template <typename ElementType, VectorOrientation oerientation>
+        template <typename ElementType, VectorOrientation orientation>
         class VectorReference : public ConstVectorReference<ElementType, orientation>
         {
             public: 
