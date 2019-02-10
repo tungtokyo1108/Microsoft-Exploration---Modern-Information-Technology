@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <utilities/include/TypeTraits.h>
 
 namespace ell 
 {
@@ -57,6 +58,46 @@ namespace ell
         template <typename ElementType>
         constexpr auto CosineTransformation = static_cast<Transformation<ElementType>>(std::cos);
 
-        
+        template <typename ElementType>
+        constexpr auto TangentTransformation = static_cast<Transformation<ElementType>>(std::tan);
+
+        template <typename ElementType>
+        constexpr auto ArcSineTransformation = static_cast<Transformation<ElementType>>(std::asin);
+
+        template <typename ElementType>
+        constexpr auto ArcCosineTransformation = static_cast<Transformation<ElementType>>(std::acos);
+
+        template <typename ElementType>
+        constexpr auto ArcTangentTransformation = static_cast<Transformation<ElementType>>(std::atan);
+
+        template <typename ElementType>
+        constexpr auto HyperbolicSineTransformation = static_cast<Transformation<ElementType>>(std::sinh);
+
+        template <typename ElementType>
+        constexpr auto HyperbolicCosineTransformation = static_cast<Transformation<ElementType>>(std::cosh);
+
+        template <typename ElementType>
+        constexpr auto HyperbolicTangentTransformation = static_cast<Transformation<ElementType>>(std::tanh);
+
+        template <typename ElementType>
+        constexpr auto InverseHyperbolicSineTransformation = static_cast<Transformation<ElementType>>(std::asinh);
+
+        template <typename ElementType>
+        constexpr auto InverseHyperbolicCosineTransformation = static_cast<Transformation<ElementType>>(std::acosh);
+
+        template <typename ElementType>
+        constexpr auto InverseHyperbolicTangentTranformation = static_cast<Transformation<ElementType>>(std::atanh);
+
+        template <typename ElementType>
+        constexpr auto ErrorFunctionTransformation = static_cast<Transformation<ElementType>>(std::erf);
+
+        template <typename ElementType, utilities::IsFundamental<ElementType> concept = true> 
+        ElementType SquareTransformationImplementation(ElementType x)
+        {
+            return x * x;
+        }
+
+        template <typename ElementType>
+        constexpr auto SquareTransformation = static_cast<Transformation<ElementType>>(SquareTransformationImplementation);
     }
 } 
