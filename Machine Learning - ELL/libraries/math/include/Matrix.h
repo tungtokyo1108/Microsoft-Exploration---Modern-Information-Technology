@@ -171,7 +171,76 @@ namespace ell
                 using ConstMatrixReference<ElementType, layout>::Transpose;
                 using ConstMatrixReference<ElementType, layout>::ReferenceAsVector;
 
-                
+                MatrixReference<ElementType, layout> GetReference() 
+                {
+                    return *this;
+                }
+
+                auto Transpose() -> MatrixReference<ElementType, TransposeMatrixLayout<layout>::value>;
+                MatrixReference<ElementType, layout> GetSubMatrix(size_t firstRow, size_t firstColumn, size_t numRows, size_t numColumns);
+                ColumnVectorReference<ElementType> GetColumn(size_t index);
+                RowVectorReference<ElementType> GetRow(size_t index);
+                ColumnVectorReference<ElementType> GetDiagonal();
+                ColumnVectorReference<ElementType> ReferenceAsVector();
+                auto GetMajorVector(size_t index)
+                {
+                    return VectorReference<ElementType, MatrixBase<ElementType, layout>::_internalOrientation>(this->GetMajorVectorBegin(index), this->GetMajorSize(),1);
+                }
+            protected:
+                friend MatrixReference<ElementType, TransposeMatrixLayout<layout>::value>;
         };
+
+        template <typename ElementType, MatrixLayout layout>
+        class Matrix : public MatrixReference<ElementType, layout>
+        {
+            public: 
+                Matrix(size_t numRows, size_t numColumns);
+                Matrix(std::initializer_list<std::initializer_list<ElementType>> list);
+                Matrix(size_t numRows, size_t numColumns, const std::vector<ElementType>& data);
+                Matrix(size_t numRows, size_t numColumns, std::vector<ElementType>&& data);
+                Matrix(Matrix<ElementType, layout>&& other);
+                Matrix(const Matrix<ElementType, layout>& other);
+                Matrix(ConstMatrixReference<ElementType, TransposeMatrixLayout<layout>::value> other);
+                Matrix<ElementType, layout>& operator=(Matrix<ElementType, layout> other);
+                std::vector<ElementType> TaArray() const 
+                {
+                    return _data;
+                }
+                void Swap(Matrix<ElementType, layout>& other);
+            
+            private:
+                std::vector<ElementType> _data;
+        };
+
+        class MatrixArchiver
+        {
+            public: 
+                template<typename ElementType, MatrixLayout layout>
+                static void Write(const Matrix<ElementType, layout>& matrix, const std::string& name, utilities::Archiver& archiver);
+
+                template<typename ElementType, MatrixLayout layout>
+                static void Read(Matrix<ElementType, layout>& matrix, const std::string& name, utilities::Unarchiver& archiver);
+
+            private:
+                static std::string GetRowsName(const std::string& name) {return name + "_rows";}
+                static std::string GetColumnsName(const std::string& name) {return name + "_columns";}
+                static std::string GetValuesName(const std::string& name) {return name + "_values";}
+        };
+
+        template <typename ElementType>
+        using ColumnMatrix = Matrix<ElementType, MatrixLayout::columnMajor>;
+
+        template <typename ElementType>
+        using ColumnMatrixReference = MatrixReference<ElementType, MatrixLayout::columnMajor>;
+
+        template <typename ElementType>
+        using RowMatrix = Matrix<ElementType, MatrixLayout::rowMajor>;
+
+        template <typename ElementType>
+        using RowMatrixReference = MatrixReference<ElementType, MatrixLayout::rowMajor>;
+
+        template <typename ElementType>
+        using ConstRowMatrixReference = ConstMatrixReference<ElementType, MatrixLayout::rowMajor>;
     }
 } 
+
