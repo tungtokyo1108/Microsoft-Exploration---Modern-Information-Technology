@@ -316,3 +316,16 @@ namespace ell
         }        
     }
 }
+
+#pragma region implementation 
+
+#include <utilities/include/Debug.h>
+#include <utilities/include/Exception.h>
+
+namespace ell 
+{
+    namespace math 
+    {
+        
+    }
+}
