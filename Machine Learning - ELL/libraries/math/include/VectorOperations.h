@@ -326,6 +326,124 @@ namespace ell
 {
     namespace math 
     {
-        
-    }
+        template <typename ElementType, VectorOrientation orientation>
+        void Print(ConstVectorReference<ElementType, orientation> vector, std::ostream& stream, size_t indent, size_t maxElements)
+        {
+            DEBUG_CHECK_SIZES(maxElements < 3, "cannot specify maxElements below 3.");
+            stream << std::string(indent, ' ');
+            if (vector.Size() == 0)
+            {
+                stream << "{ }";
+            }
+            else if (vector.Size() <= maxElements)
+            {
+                stream << " { " << vector[0];
+                for (size_t i=1; i < vector.Size(); ++i)
+                {
+                    stream << ", " << vector[i];
+                }
+                stream << " } ";
+            }
+            else 
+            {
+                stream << " { " << vector[0];
+                for (size_t i = 0; i < maxElements; ++i)
+                {
+                    stream << ", " << vector[i];
+                }
+                stream << ", ..., " << vector[vector.Size() - 1] << " } ";
+            }
+        }
+
+        template <typename ElementType, VectorOrientation orientation>
+        std::ostream& operator<<(std::ostream& stream, ConstVectorReference<ElementType, orientation> vector)
+        {
+            Print(vector, stream);
+            return stream;
+        }
+
+        template <typename ElementType, VectorOrientation orientation, typename TransformationType>
+        TransformedConstVectorReference<ElementType, orientation, TransformationType>::TransformedConstVectorReference(
+            ConstVectorReference<ElementType, orientation> vector, TransformationType transformation) : 
+            _vector(vector),
+            _transformation(std::move(transformation))
+        {}
+
+        template <typename ElementType, VectorOrientation orientation, typename TransformationType>
+        TransformedConstVectorReference<ElementType, orientation, TransformationType> TransformVector(
+            ConstVectorReference<ElementType, orientation> vector, TransformationType transformation)
+        {
+            return TransformedConstVectorReference<ElementType, orientation, TransformationType>(vector, transformation);
+        }
+
+        template <typename ElementType, VectorOrientation orientation>
+        auto Square(ConstVectorReference<ElementType, orientation> vector) -> TransformedConstVectorReference<
+                    ElementType, orientation, Transformation<ElementType>>
+        {
+            return TransformVector(vector, SquareTransformation<ElementType>);
+        }
+
+        template <typename ElementType, VectorOrientation orientation>
+        auto Sqrt(ConstVectorReference<ElementType, orientation> vector) -> TransformedConstVectorReference<
+                    ElementType, orientation, Transformation<ElementType>>
+        {
+            return TransformVector(vector, SquareRootTransformation<ElementType>);
+        }
+
+        template <typename ElementType, VectorOrientation orientation>
+        auto Abs(ConstVectorReference<ElementType, orientation> vector) -> TransformedConstVectorReference<
+                    ElementType, orientation, Transformation<ElementType>>
+        {
+            return TransformVector(vector, AbsoluteValueTransformation<ElementType>);
+        }
+
+        template <typename ElementType>
+        ElementType ScaleFunction<ElementType>::operator()(ElementType x) 
+        {
+            return x * _value;
+        }
+
+        template <typename ElementType, VectorOrientation orientation>
+        auto operator*(double scalar, ConstVectorReference<ElementType, orientation> vector) -> TransformedConstVectorReference<
+                        ElementType, orientation, ScaleFunction<ElementType>>
+        {
+            ScaleFunction<ElementType> Transformation {static_cast<ElementType>(scalar)};
+            return TransformVector(vector, transformation);
+        }
+
+        template <typename VectorElementType, VectorOrientation orientation, 
+                  typename ScalarElementType, utilities::IsFundamental<ScalarElementType> concept>
+        void operator+=(VectorReference<VectorElementType, orientation> vector, ScalarElementType scalar)
+        {
+            AddUpdate(static_cast<VectorElementType>(scalar), vector);
+        }
+
+        template <typename ElementType, VectorOrientation orientation>
+        void operator+=(VectorReference<ElementType, orientation> vectorB, 
+                        ConstVectorReference<ElementType, orientation> vectorA)
+        {
+            AddUpdate(vectorA, vectorB);
+        }
+
+        template <typename ElementType, VectorOrientation orientation, typename TransformationType>
+        void operator+=(VectorReference<ElementType, orientation> vector, 
+                        TransformedConstVectorReference<ElementType, orientation, TransformationType> transformedVector)
+        {
+            TransformAddUpdate(transformedVector.GetTransformation(), transformedVector.GetVector(), vector);
+        }
+
+        template <typename VectorElementType, VectorOrientation orientation, 
+                  typename ScalarElementType, utilities::IsFundamental<ScalarElementType> concept>
+        void operator-=(VectorReference<VectorElementType, orientation> vector, ScalarElementType scalar)
+        {
+            AddUpdate(static_cast<VectorElementType>(-scalar), vector);
+        }
+
+        template <typename ElementType, VectorOrientation orientation>
+        void operator-=(VectorReference<ElementType, orientation> vectorB,  
+                        ConstVectorReference<ElementType, orientation> vectorA)
+        {
+            ScaleAddUpdate(static_cast<ElementType>(-1), vectorA, One(), vectorB);
+        }
+    } 
 }
