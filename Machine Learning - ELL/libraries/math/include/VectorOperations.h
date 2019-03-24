@@ -445,5 +445,188 @@ namespace ell
         {
             ScaleAddUpdate(static_cast<ElementType>(-1), vectorA, One(), vectorB);
         }
+
+        template <typename VectorElementType, VectorOrientation orientation, 
+                  typename ScalarElementType, utilities::IsFundamental<ScalarElementType> concept>
+        void operator*=(VectorReference<VectorElementType, orientation> vector, ScalarElementType scalar)
+        {
+            ScaleUpdate(static_cast<VectorElementType>(scalar), vector);
+        }
+
+        template <typename VectorElementType, VectorOrientation orientation, 
+                  typename ScalarElementType, utilities::IsFundamental<ScalarElementType> concept>
+        void operator/=(VectorReference<VectorElementType, orientation> vector, ScalarElementType scalar)
+        {
+            DEBUG_THROW(scalar == 0, utilities::NumericException(utilities::NumericExceptionErrors::divideByZero, "Divide by zero."));
+            ScaleUpdate(1 / static_cast<VectorElementType>(scalar), vector);
+        }
+
+        template <ImplementationType implementation, typename ElementType, VectorOrientation orientation>
+        void AddUpdate(ElementType scalar, VectorReference<ElementType, orientation> vector)
+        {
+            if (scalar == 0)
+            {
+                return;
+            }
+            else 
+            {
+                Internal::VectorOperations<implementation>::AddUpdate(scalar, vector);
+            }
+        }
+
+        template <ImplementationType implementation, typename ElementType, VectorOrientation orientation>
+        void AddUpdate(ConstVectorReference<ElementType, orientation> vectorA, 
+                        VectorReference<ElementType, orientation> vectorB)
+        {
+            DEBUG_CHECK_SIZES(vectorB.Size() != vectorA.Size(), "Incompatible vector sizes.");
+            Internal::VectorOperations<implementation>::AddUpdate(vectorA, vectorB);
+        }
+
+        template <ImplementationType implementation, typename ElementType, VectorOrientation orientation>
+        void AddSet(ElementType scalar, ConstVectorReference<ElementType, orientation> vector, 
+                    VectorReference<ElementType, orientation> output)
+        {
+            if (scalar == 0)
+            {
+                output.CopyFrom(vector);
+            }
+            else 
+            {
+                Internal::VectorOperations<implementation>::AddSet(scalar, vector, output);
+            }
+        }
+
+        template <ImplementationType implementation, typename ElementType, VectorOrientation orientation>
+        void AddSet(ElementType scalar, ConstVectorReference<ElementType, orientation> vector, 
+                    VectorReference<ElementType, orientation> output)
+        {
+            DEBUG_CHECK_SIZES(vectorA.Size() != vectorB.Size(), "Incompatible vector sizes.");
+            Internal::VectorOperations<implementation>::AddSet(vectorA, vectorB, output);
+        }
+
+        template <ImplementationType implementation, typename ElementType, VectorOrientation orientation>
+        void ScaleUpdate(ElementType scalar, VectorReference<ElementType, orientation> vector)
+        {
+            if (scalar == 1)
+            {
+                return;
+            }
+            else if (scalar == 0)
+            {
+                vector.Reset();
+            }
+            else 
+            {
+                Internal::VectorOperations<implementation>::ScaleUpdate(scalar, vector);
+            }
+        }
+
+        template <ImplementationType implementation, typename ElementType, VectorOrientation orientation>
+        void ScaleSet(ElementType scalar, ConstVectorReference<ElementType, orientation> vector, VectorReference<ElementType, orientation> output)
+        {
+            DEBUG_CHECK_SIZES(vector.Size() != output.Size(), "Incompatible vector sizes.");
+
+            if (scalar == 1)
+            {
+                output.CopyFrom(vector);
+            }
+            else if (scalar == 0)
+            {
+                output.Reset();
+            }
+            else
+            {
+                Internal::VectorOperations<implementation>::ScaleSet(scalar, vector, output);
+            }
+        }
+
+        template <ImplementationType implementation, typename ElementType, VectorOrientation orientation>
+        void ScaleAddUpdate(ElementType scalarA, ConstVectorReference<ElementType, orientation> vectorA, One, VectorReference<ElementType, orientation> vectorB)
+        {
+            DEBUG_CHECK_SIZES(vectorB.Size() != vectorA.Size(), "Incompatible vector sizes.");
+
+            if (scalarA == 0)
+            {
+                return;
+            }
+            else if (scalarA == 1)
+            {
+                AddUpdate<implementation>(vectorA, vectorB);
+            }
+            else
+            {
+                Internal::VectorOperations<implementation>::ScaleAddUpdate(scalarA, vectorA, One(), vectorB);
+            }
+        }
+
+        template <ImplementationType implementation, typename ElementType, VectorOrientation orientation>
+        void ScaleAddUpdate(ElementType scalarA, OnesVector, ElementType scalarB, VectorReference<ElementType, orientation> vectorB)
+        {
+            if (scalarA == 0)
+            {
+                ScaleUpdate<implementation>(scalarB, vectorB);
+            }
+            else if (scalarB == 0)
+            {
+                vectorB.Fill(scalarA);
+            }
+            else if (scalarB == 1)
+            {
+                Internal::VectorOperations<implementation>::AddUpdate(scalarA, vectorB);
+            }
+            else 
+            {
+                Internal::VectorOperations<implementation>::ScaleAddUpdate(scalarA, OnesVector(), scalarB, vectorB);
+            }
+        }
+
+        template <ImplementationType implementation, typename ElementType, VectorOrientation orientation>
+        void ScaleAddUpdate(One, ConstVectorReference<ElementType, orientation> vectorA, ElementType scalarB, 
+                            VectorReference<ElementType, orientation> vectorB)
+        {
+            DEBUG_CHECK_SIZES(vectorB.Size() != vectorA.Size(), "Incompatible vector sizes.");
+
+            if (scalarB == 0)
+            {   
+                vectorB.CopyFrom(vectorA);
+            }
+            else if (scalarB == 1)
+            {
+                Internal::VectorOperations<implementation>::AddUpdate(vectorA, vectorB);
+            }
+            else
+            {
+                Internal::VectorOperations<implementation>::ScaleAddUpdate(One(), vectorA, scalarB, vectorB);
+            }
+        }
+
+        template <ImplementationType implementation, typename ElementType, VectorOrientation orientation>
+        void ScaleAddUpdate(ElementType scalarA, ConstVectorReference<ElementType, orientation> vectorA, ElementType scalarB, VectorReference<ElementType, orientation> vectorB)
+        {
+            DEBUG_CHECK_SIZES(vectorB.Size() != vectorA.Size(), "Incompatible vector sizes.");
+
+            if (scalarA == 0)
+            {
+                ScaleUpdate<implementation>(scalarB, vectorB);
+            }
+            else if (scalarA == 1)
+            {
+                ScaleAddUpdate<implementation>(One(), vectorA, scalarB, vectorB);
+            }
+            else if (scalarB == 0)
+            {
+                Internal::VectorOperations<implementation>::ScaleSet(scalarA, vectorA, vectorB);
+            }
+            else if (scalarB == 1)
+            {
+                Internal::VectorOperations<implementation>::ScaleAddUpdate(scalarA, vectorA, One(), vectorB);
+            }
+            else
+            {
+                Internal::VectorOperations<implementation>::ScaleAddUpdate(scalarA, vectorA, scalarB, vectorB);
+            }
+        }
+        
+            
     } 
 }
