@@ -29,6 +29,7 @@ namespace ell
             protected: 
                 CommonMatrixBase(const ElementType* pData, size_t numRows, size_t numColumns, size_t increment);
                 void Swap(CommonMatrixBase<ElementType>& other);
+                const ElementType* _pData;
                 size_t _numRows;
                 size_t _numColumns;
                 size_t _increment;
@@ -123,7 +124,7 @@ namespace ell
                 MatrixBase(const ElementType* pData, size_t numRows, size_t numColumns);
                 MatrixBase(const ElementType* pData, size_t numRows, size_t numColumns, size_t increment);
                 void Swap(MatrixBase<ElementType, MatrixLayout::rowMajor>& other);
-                static constexpr 
+                static constexpr VectorOrientation _intervalOrientation = VectorOrientation::row;
         };
 
         template <typename ElementType, MatrixLayout layout>
@@ -197,7 +198,7 @@ namespace ell
                 void Transform(TransformationType transformation);
 
                 using ConstMatrixReference<ElementType, layout>::GetSubMatrix;
-                using ConstMatrixReference<ElementType, layout>::GetColumns;
+                using ConstMatrixReference<ElementType, layout>::GetColumn;
                 using ConstMatrixReference<ElementType, layout>::GetRow;
                 using ConstMatrixReference<ElementType, layout>::GetDiagonal;
                 using ConstMatrixReference<ElementType, layout>::GetMajorVector;
@@ -311,7 +312,7 @@ namespace ell
         template <typename ElementType>
         MatrixBase<ElementType, MatrixLayout::rowMajor>::MatrixBase(const ElementType* pData, 
                     size_t numRows, size_t numColumns) : 
-            CommonMatrixBase<ElementType>(pData, numRows, numColumns)
+            CommonMatrixBase<ElementType>(pData, numRows, numColumns, numColumns)
         {}
 
         template <typename ElementType>
@@ -368,7 +369,7 @@ namespace ell
                 "("s + to_string(rowIndex) + "," + to_string(columnIndex) + ") exceeds matrix dimensions (" + 
                 to_string(this->NumRows()) + "x" + to_string(this->NumColumns()) + ")."));
             
-            return GetConstDataPointer()[rowIndex * this->GetRowIncrement() + columnIndex * this->GetColumnsIncrement()];
+            return GetConstDataPointer()[rowIndex * this->GetRowIncrement() + columnIndex * this->GetColumnIncrement()];
         }
 
         template <typename ElementType, MatrixLayout layout>
@@ -703,21 +704,6 @@ namespace ell
         template <typename ElementType, MatrixLayout layout>
         Matrix<ElementType, layout>::Matrix(ConstMatrixReference<ElementType, layout>& other) : 
             MatrixReference<ElementType, layout>(nullptr, other.NumRows(), other.NumColumns()), 
-            _data(other.NumRows() * other.NumColumns())
-        {
-            this->_pData = _data.data();
-            for (size_t i=0; i < this->NumRows(); ++i)
-            {
-                for (size_t j=0; j < this->NumColumns(); ++j)
-                {
-                    (*this)(i,j) = other(i,j);
-                }
-            }
-        }
-
-        template <typename ElementType, MatrixLayout layout>
-        Matrix<ElementType, layout>::Matrix(ConstMatrixReference<ElementType, layout>& other) : 
-            MatrixReference<ElementType, layout>(nullptr, other.NumRows(), other.NumColumns()),
             _data(other.NumRows() * other.NumColumns())
         {
             this->_pData = _data.data();
