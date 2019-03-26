@@ -76,6 +76,7 @@ namespace ell
         template <typename ElementType, VectorOrientation orientation>
         class ConstVectorReference : public UnorientedConstVectorBase<ElementType>
         {
+        public:
             ConstVectorReference(const ElementType* pData, size_t size, size_t increment = 1);
             void Swap(ConstVectorReference<ElementType, orientation>& other);
             bool IsEqual(ConstVectorReference<ElementType, orientation> other, ElementType tolerance = 1.0e-8) const;
@@ -606,7 +607,7 @@ namespace ell
         {
             return {
                 vector._data.cbegin(),
-                static_cast<ptrdiff_t>(vectro.GetIncrement())
+                static_cast<ptrdiff_t>(vector.GetIncrement())
             };
         } 
 
