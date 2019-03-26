@@ -23,7 +23,7 @@ namespace ell
             int GetCBlasMatrixOrder(MatrixLayout order);
             int GetCBlasMatrixTranspose(MatrixTranspose transpose);
 
-            int SetNumThreads(int numThreads);
+            void SetNumThreads(int numThreads);
 
             void Copy(int n, const float* x, int incx, float* y, int incy);
             void Copy(int n, const double* x, int incx, double* y, int incy);
