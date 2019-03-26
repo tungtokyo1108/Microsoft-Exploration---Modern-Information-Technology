@@ -6,6 +6,8 @@
  *  Student (MIG Virtual Developer): Tung Dang
  */
 
+#pragma once
+
 #include <stdexcept>
 #include <string>
 #include <vector>
