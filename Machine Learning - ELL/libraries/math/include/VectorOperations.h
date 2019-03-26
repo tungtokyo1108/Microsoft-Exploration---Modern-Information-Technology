@@ -407,7 +407,7 @@ namespace ell
         auto operator*(double scalar, ConstVectorReference<ElementType, orientation> vector) -> TransformedConstVectorReference<
                         ElementType, orientation, ScaleFunction<ElementType>>
         {
-            ScaleFunction<ElementType> Transformation {static_cast<ElementType>(scalar)};
+            ScaleFunction<ElementType> transformation {static_cast<ElementType>(scalar)};
             return TransformVector(vector, transformation);
         }
 
@@ -497,7 +497,8 @@ namespace ell
         }
 
         template <ImplementationType implementation, typename ElementType, VectorOrientation orientation>
-        void AddSet(ElementType scalar, ConstVectorReference<ElementType, orientation> vector, 
+        void AddSet(ConstVectorReference<ElementType, orientation> vectorA,
+                    ConstVectorReference<ElementType, orientation> vectorB, 
                     VectorReference<ElementType, orientation> output)
         {
             DEBUG_CHECK_SIZES(vectorA.Size() != vectorB.Size(), "Incompatible vector sizes.");
@@ -815,7 +816,7 @@ namespace ell
             DEBUG_CHECK_SIZES(vectorA.Size() != vectorB.Size(), "Incompatible vector sizes");
             ElementType* pVectorBData = vectorB.GetDataPointer();
             const ElementType* pVectorAData = vectorA.GetConstDataPointer();
-            const ElementType* pVectorBData = pVectorBData + vectorB.Size() * vectorB.getIncrement();
+            const ElementType* pVectorBEnd = pVectorBData + vectorB.Size() * vectorB.getIncrement();
             while (pVectorBData < pVectorBEnd)
             {
                 *pVectorBData += transformation(*pVectorAData);
