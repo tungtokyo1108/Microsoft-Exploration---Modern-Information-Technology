@@ -62,4 +62,24 @@ void TestVectorIndexer()
                             && w[0] == 4 && w[1] == 5 && w[2] == 6 && z[0] == 4 && z[1] == 5 && z[2] == 6);
 }
 
+template <typename ElementType>
+void TestVectorSize()
+{
+    math::RowVector<ElementType> u{};
+    math::RowVector<ElementType> v{1,2,3,4,5,6,7};
+    auto w = v.GetSubVector(2,3);
+
+    testing::ProcessTest("Vector::Size", v.Size() == 7 && u.Size() == 0 && w.Size() == 3);
+}
+
+template <typename ElementType>
+void TestVectorGetDataPointer()
+{
+    math::RowVector<ElementType> v{1,2,3,4,5,6,7};
+    auto u = v.GetSubVector(2,2);
+
+    testing::ProcessTest("Vector::GetDataPointer", &(v[0]) == v.GetDataPointer() && 
+                            v.GetDataPointer() + 2 == u.GetDataPonter());
+}
+
 #pragma endregion implementation
