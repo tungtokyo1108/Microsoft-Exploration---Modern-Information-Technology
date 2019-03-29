@@ -43,6 +43,7 @@ set(include
     include/TypeName.h
     include/TypeTraits.h
     include/Unused.h
+    include/Hash.h
 )
 
 #source_group("src" FILES ${src})
@@ -69,11 +70,13 @@ set(test_src
     test/src/main.cpp 
     test/src/Files_test.cpp
     test/src/Iterator_test.cpp
+    test/src/Hash_test.cpp
 )
 
 set(test_include
     test/include/Files_test.h
     test/include/Iterator_test.h
+    test/include/Hash_test.h
 )
 
 source_group("src" FILES ${test_src})
