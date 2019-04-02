@@ -7,7 +7,12 @@
  */
 
 #pragma once 
+#include <iostream>
 
 namespace ell {
+
     void Hash_test1();
+
+    template <typename ElementType>
+    void PrintBinaryTreeMap_Test();
 }
