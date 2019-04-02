@@ -28,5 +28,12 @@ namespace ell
         // ok &= testing::IsTrue(utilities::HashValue(std::vector{1,2,3}) != utilities::HashValue(std::vector{3,2,1}));
         testing::ProcessTest("Hash utility test", ok);
     }
+
+    template <typename ElementType>
+    void PrintBinaryTreeMap_Test()
+    { 
+        std::cout << "Vertical order traversal is n"; 
+        utilities::HashAlgorithms<ElementType>::PrintBinaryTreeMap::printVerticalOrder();
+    }
 }
 
