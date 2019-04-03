@@ -8,6 +8,7 @@
 
 #include "utilities/test/include/Files_test.h"
 #include "utilities/test/include/Iterator_test.h"
+#include "utilities/test/include/Hash_test.h"
 
 #include <testing/include/testing.h>
 
@@ -39,6 +40,8 @@ int main(int argc, char const *argv[])
         #ifdef WIN32
         TestUnicodePaths(basePath);
         #endif
+
+        // PrintBinaryTreeMap_Test<void>();
     }
     catch (const utilities::Exception& exception)
     {
