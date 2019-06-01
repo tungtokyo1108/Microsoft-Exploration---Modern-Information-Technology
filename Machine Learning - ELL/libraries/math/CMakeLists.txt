@@ -16,6 +16,8 @@ set(include include/BlasWrapper.h
             include/Common.h
             include/Matrix.h
             include/Vector.h
+            include/VectorOperations.h
+            include/MatrixOperations.h
 )
 
 source_group("src" FILES ${src})
@@ -38,7 +40,8 @@ set_property(TARGET ${library_name} PROPERTY FOLDER "libraries")
 set(test_name ${library_name}_test)
 
 set(test_src test/src/main.cpp)
-set(test_include test/include/Vector_test.h)
+set(test_include test/include/Vector_test.h
+                 test/include/Matrix_test.h)
 
 source_group("src" FILES ${test_src})
 source_group("include" FILES ${test_include})
