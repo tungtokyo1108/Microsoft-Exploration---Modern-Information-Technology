@@ -7,6 +7,7 @@
  */
 
 #include "Vector_test.h"
+#include "Matrix_test.h"
 
 template <typename ElementType>
 void RunVectorTests()
@@ -22,10 +23,27 @@ void RunVectorTests()
     TestVectorToArray<ElementType>();
 }
 
+template <typename ElementType, math::MatrixLayout layout>
+void RunLayoutMatrixTests()
+{
+    TestMatrixNumRows<ElementType, layout>();
+}
+
+template <typename ElementType>
+void RunMatrixTests()
+{
+    RunLayoutMatrixTests<ElementType, math::MatrixLayout::columnMajor>();
+    RunLayoutMatrixTests<ElementType, math::MatrixLayout::rowMajor>();
+}
+
 int main()
 {
     RunVectorTests<float>();
     RunVectorTests<double>();
+
+    RunMatrixTests<float>();
+    RunMatrixTests<double>();
+
 
     if (testing::DidTestFail())
     {
