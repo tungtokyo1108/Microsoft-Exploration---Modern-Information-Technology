@@ -8,6 +8,9 @@
 
 #include "Vector_test.h"
 #include "Matrix_test.h"
+#include "Tensor_test.h"
+
+using namespace ell;
 
 template <typename ElementType>
 void RunVectorTests()
@@ -36,6 +39,20 @@ void RunMatrixTests()
     RunLayoutMatrixTests<ElementType, math::MatrixLayout::rowMajor>();
 }
 
+
+template <typename ElementType, math::Dimension dimension0, math::Dimension dimension1, math::Dimension dimension2>
+void RunLayoutTensorTests()
+{
+    TestTensorIndexer<ElementType, dimension0, dimension1, dimension2>();
+}
+
+template <typename ElementType>
+void RunTensorTests()
+{
+    RunLayoutTensorTests<ElementType, math::Dimension::column, math::Dimension::row, math::Dimension::channel>();
+    RunLayoutTensorTests<ElementType, math::Dimension::channel, math::Dimension::column, math::Dimension::row>();
+}
+
 int main()
 {
     RunVectorTests<float>();
@@ -43,6 +60,9 @@ int main()
 
     RunMatrixTests<float>();
     RunMatrixTests<double>();
+
+    RunTensorTests<float>();
+    RunTensorTests<double>();
 
 
     if (testing::DidTestFail())
