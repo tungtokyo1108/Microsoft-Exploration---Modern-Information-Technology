@@ -10,6 +10,7 @@ endif()
 find_package(blas)
 
 set(src src/BlasWrapper.cpp
+        src/Tensor.cpp
 )
 
 set(include include/BlasWrapper.h
@@ -18,6 +19,8 @@ set(include include/BlasWrapper.h
             include/Vector.h
             include/VectorOperations.h
             include/MatrixOperations.h
+            include/Tensor.h
+            include/TensorOperations.h
 )
 
 source_group("src" FILES ${src})
