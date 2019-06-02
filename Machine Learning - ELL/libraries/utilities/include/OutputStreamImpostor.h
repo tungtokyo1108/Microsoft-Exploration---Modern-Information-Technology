@@ -6,6 +6,8 @@
  *  Student (MIG Virtual Developer): Tung Dang
  */
 
+#pragma once
+
 #include <functional>
 #include <memory>
 #include <ostream>
