@@ -65,41 +65,14 @@ namespace ell
         class TensorShape : public TensorCoordinateBase
     {
     public:
-        /// <summary> Constructs a TensorShape from row, column, channel values. </summary>
-        ///
-        /// <param name="rowValue"> The row value. </param>
-        /// <param name="columnValue"> The column value. </param>
-        /// <param name="channelValue"> The channel value. </param>
+        
         TensorShape(size_t rowValue, size_t columnValue, size_t channelValue);
-
-        /// <summary> Constructs a TensorShape from an IntegerTriplet. </summary>
-        ///
-        /// <param name="values"> The triplet. </param>
         TensorShape(IntegerTriplet values);
-
-        /// <summary> Constructs a TensorShape from a vector equivalent of IntegerTriplet. </summary>
-        ///
-        /// <param name="values"> The vector. </param>
         TensorShape(const std::vector<size_t>& values);
 
-        /// <summary> Gets the number rows in the tensor. </summary>
-        ///
-        /// <returns> The number of rows in the tensor. </returns>
         inline size_t NumRows() const { return _rowValue; }
-
-        /// <summary> Gets the number columns in the tensor. </summary>
-        ///
-        /// <returns> The number of columns in the tensor. </returns>
         inline size_t NumColumns() const { return _columnValue; }
-
-        /// <summary> Gets the number channels in the tensor. </summary>
-        ///
-        /// <returns> The number of channels in the tensor. </returns>
         inline size_t NumChannels() const { return _channelValue; }
-
-        /// <summary> Gets the total number of elements in the tensor. </summary>
-        ///
-        /// <returns> The total number of elements in the tensor. </returns>
         size_t Size() const { return NumRows() * NumColumns() * NumChannels(); }
     };
 
