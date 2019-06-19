@@ -1,8 +1,10 @@
 set (library_name functions)
 
-set (src src/LogLoss.cpp)
+set (src src/LogLoss.cpp
+         src/L2Regularizer.cpp)
 
-set (include include/LogLoss.h)
+set (include include/LogLoss.h
+             include/L2Regularizer.h)
 
 source_group("src" FILES ${src})
 source_group("include" FILES ${include})
