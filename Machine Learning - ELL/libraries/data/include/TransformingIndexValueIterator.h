@@ -28,6 +28,35 @@ namespace ell
                 WrappedIndexValueIteratorType _wrappedIterator;
                 TransformationType _transform;
         };
+
+        template <typename WrappedIndexValueIteratorType, typename TransformationType>
+        TransformingIndexValueIteator<WrappedIndexValueIteratorType, TransformationType> MakeTransformingIndexValueIterator(
+            WrappedIndexValueIteratorType wrappedIterator, TransformationType transform) 
+        {
+            return TransformingIndexValueIteator<WrappedIndexValueIteratorType, TransformationType>(
+                std::move(wrappedIterator), std::move(transform));
+        }
     } // namespace data
-    
 }
+
+#pragma region implementation 
+
+namespace ell {
+    namespace data {
+        template <typename WrappedIndexValueIteratorType, typename TransformationType>
+        TransformingIndexValueIteator<WrappedIndexValueIteratorType, TransformationType>::TransformingIndexValueIteator(
+            WrappedIndexValueIteratorType wrappedIterator, TransformationType transform) :  
+            _wrappedIterator(std::move(wrappedIterator)),
+            _transform(std::move(transform))
+        {}
+
+        template <typename WrappedIndexValueIteratorType, typename TransformationType>
+        IndexValue TransformingIndexValueIteator<WrappedIndexValueIteratorType, TransformationType>::Get() const 
+        {
+            auto indexValue = _wrappedIterator.Get();
+            return {indexValue.inde, _transform(indexValue)};
+        }
+    }
+}
+
+#pragma endregion implementation
